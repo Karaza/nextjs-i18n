@@ -1,21 +1,29 @@
-import { useRouter } from 'next/router';
 import Layout from '../components/layout';
+import { useRouter } from 'next/router';
 
-export default function Home() {
-  let router = useRouter();
-
+export async function getStaticProps({ locale }) {
   let greeting =
-    router.locale === 'en-US'
+    locale === 'en-US'
       ? 'Hello World'
-      : router.locale === 'de'
+      : locale === 'de'
       ? 'Hallo Welt'
-      : router.locale === 'fr'
+      : locale === 'fr'
       ? 'Bonjour le monde'
       : '';
 
+  return {
+    props: {
+      greeting,
+    },
+  };
+}
+
+export default function Home(props) {
+  let router = useRouter();
+
   return (
     <Layout>
-      <h1>{greeting}</h1>
+      <h1>{props.greeting}</h1>
     </Layout>
   );
 }
